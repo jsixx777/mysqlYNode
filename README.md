@@ -15,3 +15,4 @@ The client configuration will also build the Sass files found at `/src/client/sc
 In order to run the server, use `npm run dev`, and the server will start on port 3000 (http://localhost:3000). 
 
 Webpack will watch the files. Once you save a file, you can refresh your browser to ensure you got the updated client files. If you only change server files, you *shouldn't* need to refresh.
+"# mysqlYNode" 
