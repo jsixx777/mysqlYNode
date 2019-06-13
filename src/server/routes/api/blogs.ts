@@ -7,6 +7,7 @@ import { RequestHandler } from 'express-serve-static-core';
 
 const router = express.Router();
 const isAdmin: RequestHandler = (req, res,next) =>{
+    console.log(req.user);
     if(!req.user || req.user.role !== 'admin'){
         return res.sendStatus(401);
     }else{
@@ -15,6 +16,7 @@ const isAdmin: RequestHandler = (req, res,next) =>{
 }
 
 router.get('/', async(req, res, next) =>{
+    console.log('nanu nanu');
     try{
         let blogs = await DB.Blogs.getAll();
         res.send(blogs);

@@ -13,7 +13,9 @@ passport.use(new LocalStategy.Strategy({
 }, async (email,password,done) =>{
     try{
         let [user]: any = await DB.Users.findOneByEmail(email);
+        
         if(user && ComparePassword(password,user.password)) {
+            //console.log('stategy');
             done(null,user);
         }else{
             done(null,false);
@@ -23,3 +25,4 @@ passport.use(new LocalStategy.Strategy({
     }
 
 }))
+

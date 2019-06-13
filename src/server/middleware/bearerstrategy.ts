@@ -11,6 +11,7 @@ passport.use(new BearerStrategy.Strategy(async (token,done) =>{
         if(user){
             done(null,user);
         }else{
+            console.log('false face');
             done(null,false);
         }
     }catch(e){

@@ -14,8 +14,8 @@ app.use(express.static(p));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(routes);
-
-const port = process.env.PORT || 8081;
+console.log(process.env);
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server listening on port: ${port}`);
 });
