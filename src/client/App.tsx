@@ -1,39 +1,35 @@
-import * as React from 'react';
+import * as React from "react";
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Login from './components/admin/Login';
+import Admin from './components/admin/Admin';
 
-import './scss/app';
+import "./scss/app";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+
+import Navbar from "./components/shared/Navbar";
+//import AllBlogs from './components/public/AllBlogs;
+//import SingleBlog from './components/public/'
 
 export default class App extends React.Component<IAppProps, IAppState> {
+  render() {
+    return (
+      <BrowserRouter>
+      <>
+          <Navbar />
+          <Switch>
+            <Route exact path="/" component={AllBlogs} />
+            <Route exact path="/single/id:" component={SingleBlog} />
+            <Route exact path="/admin" component={Admin} />
+            <Route exact path="/login" component={Login} />
 
-    constructor(props: IAppProps) {
-        super(props);
-
-        this.state = { blogs: [] };
-    }
-
-    async componentWillMount() {
-        let r = await fetch('/api/blogs');
-        let blogs = await r.json();
-        this.setState({ blogs })
-    }
-
-    render () {
-        return (
-            <main className="container">
-                <h1 className="covalence-blue">My Blog</h1>
-                <ul className="list-group">
-                    {this.state.blogs.map(blog => {
-                        return <li className="list-group-item">{blog.title}</li>
-                    })}
-                </ul>
-            </main>
-        )
-    }
+          </Switch>     
+        </>
+      </BrowserRouter>
+    );
+  }
 }
 
-interface IAppProps {
 
-}
-
-interface IAppState {
-    blogs: Array<{title: string, body: string}>;
-}
+interface IAppProps {}
+interface IAppState {}
