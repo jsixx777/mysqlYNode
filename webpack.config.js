@@ -11,7 +11,7 @@ const serverConfig = {
                 loader: 'ts-loader',
                 exclude: /node_modules/,
                 options: {
-                    configFile: 'tsconfig.server.json'
+                    configFile: 'tsconfig.on'
                 }
             }
         ]
