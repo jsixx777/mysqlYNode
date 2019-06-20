@@ -4,12 +4,13 @@ import Login from './components/admin/Login';
 import Admin from './components/admin/Admin';
 
 import "./scss/app";
-import "bootstrap/dist/css/bootstrap.min.css";
+//import "bootstrap/dist/css/bootstrap.min.css";
 
 
 import Navbar from "./components/shared/Navbar";
-//import AllBlogs from './components/public/AllBlogs;
-//import SingleBlog from './components/public/'
+import AllBlogs from './components/public/AllBlogs';
+import SingleBlog from './components/public/SingleBlog';
+import Home from './components/public/Home';
 
 export default class App extends React.Component<IAppProps, IAppState> {
   render() {
@@ -18,7 +19,8 @@ export default class App extends React.Component<IAppProps, IAppState> {
       <>
           <Navbar />
           <Switch>
-            <Route exact path="/" component={AllBlogs} />
+          <Route exact path="/" component={Home} />
+            <Route exact path="/all" component={AllBlogs} />
             <Route exact path="/single/id:" component={SingleBlog} />
             <Route exact path="/admin" component={Admin} />
             <Route exact path="/login" component={Login} />

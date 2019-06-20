@@ -12,8 +12,8 @@ import {
   DropdownMenu,
   DropdownItem } from 'reactstrap';
 
-export default class Example extends React.Component<{}, {isOpen: any}> {
-  constructor(props) {
+export default class Example extends React.Component<INavbarProps, INavbarState> {
+  constructor(props: INavbarProps) {
     super(props);
 
     this.toggle = this.toggle.bind(this);
@@ -64,3 +64,6 @@ export default class Example extends React.Component<{}, {isOpen: any}> {
     );
   }
 }
+
+interface INavbarProps { };
+interface INavbarState { isOpen: boolean };

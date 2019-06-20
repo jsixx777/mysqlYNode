@@ -14,7 +14,10 @@ app.use(express.static(p));
 app.use(express.json());
 app.use(passport.initialize());
 app.use(routes);
-console.log(process.env);
+app.get("*", (req,res)=> {
+    res.sendFile(path.join(__dirname, "../public/index.html"))
+})
+//console.log(process.env);
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server listening on port: ${port}`);
