@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {json, User} from '../utils/api';
 import { RouteComponentProps } from 'react-router-dom';
 
 
@@ -9,34 +10,64 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
         super(props);
         this.state = {
             title: null,
-            body: null
+            body: null,
+            saveStatus: null
         };
+    }
+    private alert: JSX.Element = null;
+    private saving: boolean = false;
+
+    componentDidMount(){
+        if(!User || User.userid === null || User.role != 'admin' )
+        this.props.history.replace('/login')
     }
 
     async handleBlogSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
+        if(this.saving) return;
+
         let blog: { authorid: number, title: string, body: string } = {
-            authorid: 1,
+            authorid: User.userid,
             title: this.state.title,
             body: this.state.body
         };
 
         try {
-            let result = await fetch("/api/blogs", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json",
-                    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjEzLCJhY2Nlc3N0b2tlbmlkIjo0LCJ1bmlxdWUiOiJiNTk1ZmVkM2EyODVjZGNmMDFkYTMwMDI2MDA3ZDA1YTliNWIwYzYwNWRiMmU0YTdhMzU4NDYxMGI3ZWUzMjZkIiwiaWF0IjoxNTYwMzEyMzI2fQ.oVMahFpj7Wd9K5Wj8l4Xpe60Cxg7LNSK7nVX_kp-pGM"
-                },
-                body: JSON.stringify(blog)
-            });
+            this.saving = true;
+            let result = await json('/api/blogs', 'POST', blog);
+            if(result){
+                this.setState({
+                    title: "",
+                    body: "",
+                    saveStatus: 'success'
+                })
+            }else{
+                this.setState({ saveStatus: 'error' })
+            }
+            //let result = await fetch("/api/blogs", {
+            //    method: "POST",
+            //    headers: {
+            //        "Content-type": "application/json",
+            //        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOjEzLCJhY2Nlc3N0b2tlbmlkIjo0LCJ1bmlxdWUiOiJiNTk1ZmVkM2EyODVjZGNmMDFkYTMwMDI2MDA3ZDA1YTliNWIwYzYwNWRiMmU0YTdhMzU4NDYxMGI3ZWUzMjZkIiwiaWF0IjoxNTYwMzEyMzI2fQ.oVMahFpj7Wd9K5Wj8l4Xpe60Cxg7LNSK7nVX_kp-pGM"
+            //    },
+            //    body: JSON.stringify(blog)
+            //});
         } catch (e) {
+            this.setState({ saveStatus: 'error' })
             throw e;
+        }finally{
+            this.saving = false;
         }
     }
 
     render() {
+
+        if(this.state.saveStatus === 'successful'){
+            this.alert = <div className="alert-success p-1 m-3" role='alert'>Blog Added</div>
+        }else if(this.state.saveStatus === 'error'){
+            this.alert = <div className="alert-danger p-1 m-3" role='alert'>Error Nothing Accomplished Here</div>
+        }
         return (
             <main className="container">
                 <section className="row-my-3">
@@ -57,6 +88,7 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
                                 value={this.state.body}
                                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => this.setState({ body: e.target.value })}></textarea>
                             <button type="submit" className="btn btn-warning d-block border border-primary mt-2 p-2 shadow">Submit</button>
+                            {this.alert}
                         </form>
                     </div>
                 </section>
@@ -65,6 +97,6 @@ class Admin extends React.Component<IAdminProps, IAdminState> {
     }
 }
 
-interface IAdminProps { };
-interface IAdminState { title: string, body: string };
+interface IAdminProps extends RouteComponentProps { };
+interface IAdminState { title: string, body: string, saveStatus: string };
 export default Admin;
