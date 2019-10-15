@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export interface BlogPreviewCardProps {
-    
+    blog: any //adjust later
 }
  
 export interface BlogPreviewCardState {
